@@ -1,14 +1,21 @@
 {
   "name": "testaged-coverage",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Utility script to run tests and verify coverage threshold for stages files",
-  "main": "src/index.js",
+  "main": ".bin/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:file": "jest --watch --findRelatedTests"
   },
   "files": [
-    "lib"
+    ".bin",
+    "src"
   ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "node .bin/index.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alxundr/testaged-coverage.git"
@@ -27,6 +34,7 @@
   },
   "homepage": "https://github.com/alxundr/testaged-coverage#readme",
   "devDependencies": {
+    "husky": "^4.2.5",
     "prettier": "2.0.2"
   },
   "dependencies": {

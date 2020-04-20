@@ -1,12 +1,26 @@
+'use strict';
+
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const chalk = require('chalk');
 
 async function findTests() {
-  const fileRegex = /src\/[a-zA-Z](.+)(jsx|js|tsx|ts)/g;
-  const testRegex = /(test|spec)/g;
+  const fileRegex = /src\/[a-zA-Z](.+)(jsx|js|tsx|ts)/;
+  const testRegex = /(test|spec)/;
   const { stdout } = await exec('git diff --name-only --cached');
-  return stdout.split('\n').filter(file => !testRegex.test(file) && fileRegex.test(file));
+  const endsWith = file => file.endsWith('.js') || file.endsWith('.jsx') || file.endsWith('.ts') || file.endsWith('.tsx');
+  const stagedFiles = [];
+  for (const file of stdout.split('\n')) {
+    if (!testRegex.test(file) && file.startsWith('src') && endsWith(file) && stagedFiles.indexOf(file) === -1) {
+      stagedFiles.push(file);
+    } else if (testRegex.test(file) && file.startsWith('src') && endsWith(file)) {
+      const newFile = file.replace('/__tests__', '').replace('.test', '').replace('.spec', '');
+      if (stagedFiles.indexOf(newFile) === -1) {
+        stagedFiles.push(newFile);
+      }
+    }
+  }
+  return stagedFiles;
 }
 
 async function executeTests() {
@@ -23,10 +37,12 @@ async function executeTests() {
     console.log(chalk.yellow('\nNo tests matched!\n'));
     process.exit(0);
   }
-  const command = `npm run test -- --findRelatedTests ${files.join(' ')} --coverage --collectCoverageOnlyFrom ${files.join(' ')}`;
   try {
-    const { stdout } = await exec(command);
+    const { stdout } = await exec(
+      `npm run test -- --findRelatedTests ${files.join(' ')} --coverage --collectCoverageOnlyFrom ${files.join(' ')}`
+    );
     console.log(chalk.green(stdout));
+    process.exit(0);
   } catch (e) {
     console.error(chalk.red('\nThere is an error\n'));
     console.error(chalk.red(e.message));
@@ -34,4 +50,6 @@ async function executeTests() {
   }
 }
 
-executeTests();
+module.exports = {
+  executeTests,
+};
