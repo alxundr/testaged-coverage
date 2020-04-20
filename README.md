@@ -1,7 +1,5 @@
 # testaged-coverage
 
----
-
 Use this library to execute tests on your git staged files and verify they comply with the test coverage threshold.
 
 Before the tests are run, make sure you have set a **Jest** "coverageThreshold". You can learn how to configure it [here](https://jestjs.io/docs/en/configuration#coveragethreshold-object).
@@ -24,7 +22,7 @@ Before the tests are run, make sure you have set a **Jest** "coverageThreshold".
 
 ## How to use it
 
-You need to stage your files first with `gir add`.
+You need to stage your files first with `git add`.
 
 ### In a pre-commit hook
 
