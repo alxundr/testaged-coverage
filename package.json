@@ -1,0 +1,35 @@
+{
+  "name": "testaged-coverage",
+  "version": "1.0.0",
+  "description": "Utility script to run tests and verify coverage threshold for stages files",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alxundr/testaged-coverage.git"
+  },
+  "keywords": [
+    "jest",
+    "husky",
+    "test",
+    "testing",
+    "coverage"
+  ],
+  "author": "Alexander Wong <alwongm@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alxundr/testaged-coverage/issues"
+  },
+  "homepage": "https://github.com/alxundr/testaged-coverage#readme",
+  "devDependencies": {
+    "prettier": "2.0.2"
+  },
+  "dependencies": {
+    "jest": "^25.4.0"
+  }
+}
