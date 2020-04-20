@@ -43,3 +43,18 @@ In your `package.json`, add the script to run as a pre-commit hook.
 ### Directly in command line
 
 Just execute `node ./node_modules/testaged-coverage`
+
+## Troubleshooting
+
+This library assumes you have a script setup for tests in your `package.json`.
+
+```js
+// package.json
+{
+  "scripts": {
+    "test": "jest"
+  },
+}
+```
+
+If you are using `reacts-scripts test`, you need to add the environment variable `CI=true` to prevent the script from running in watch mode.

@@ -1,6 +1,6 @@
 {
   "name": "testaged-coverage",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Utility script to run tests and verify coverage threshold for stages files",
   "main": ".bin/index.js",
   "scripts": {
@@ -36,9 +36,7 @@
   "homepage": "https://github.com/alxundr/testaged-coverage#readme",
   "devDependencies": {
     "husky": "^4.2.5",
+    "jest": "^25.4.0",
     "prettier": "2.0.2"
-  },
-  "dependencies": {
-    "jest": "^25.4.0"
   }
 }
