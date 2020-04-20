@@ -57,4 +57,4 @@ This library assumes you have a script setup for tests in your `package.json`.
 }
 ```
 
-If you are using `reacts-scripts test`, you need to add the environment variable `CI=true` to prevent the script from running in watch mode.
+If you are using `react-scripts test`, you need to add the environment variable `CI=true` to prevent the script from running in watch mode.
