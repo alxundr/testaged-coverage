@@ -1,6 +1,6 @@
 {
   "name": "testaged-coverage",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Utility script to run tests and verify coverage threshold for stages files",
   "main": "src/bin.js",
   "scripts": {

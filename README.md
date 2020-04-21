@@ -1,4 +1,4 @@
-# testaged-coverage &middot; ![Node.js CI](https://github.com/alxundr/testaged-coverage/workflows/Node.js%20CI/badge.svg?branch=master)
+# testaged-coverage &middot; ![Node.js CI](https://github.com/alxundr/testaged-coverage/workflows/Node.js%20CI/badge.svg?branch=master) &middot; ![Node.js Package](https://github.com/alxundr/testaged-coverage/workflows/Node.js%20Package/badge.svg?branch=1.1.4&event=release)
 
 Use this library to execute tests on your git staged files and verify they comply with the test coverage threshold.
 
