@@ -1,20 +1,19 @@
 {
   "name": "testaged-coverage",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Utility script to run tests and verify coverage threshold for stages files",
-  "main": ".bin/index.js",
+  "main": "src/bin.js",
   "scripts": {
     "test": "jest",
     "test:file": "jest --watch --findRelatedTests",
     "test:coverage": "jest --runInBand --coverage"
   },
   "files": [
-    ".bin",
     "src"
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "node .bin/index.js"
+      "pre-commit": "node src/bin.js"
     }
   },
   "repository": {
