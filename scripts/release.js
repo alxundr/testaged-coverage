@@ -23,16 +23,16 @@ const createRelease = async () => {
 
     const response = await fetch(`https://api.github.com/repos/alxundr/${pkg.name}/releases`, {
       method: 'POST',
-      body: {
+      body: JSON.stringify({
         tag_name: pkg.version,
         name: pkg.version,
         body: argv.body,
         draft: argv.draft === 'true',
         prerelease: argv.prerelease === 'true',
-      },
+      }),
     });
-
-    console.log(chalk.green(await response.json()));
+    const result = await response.json();
+    console.log(chalk.green(JSON.stringify(result)));
     process.exit(0);
   } catch (e) {
     console.log(chalk.red(e.message));

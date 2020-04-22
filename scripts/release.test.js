@@ -73,14 +73,16 @@ describe('Release creation', () => {
 
     minimist.mockImplementation(jest.fn(() => ({ body: 'test' })));
     await createRelease();
-    expect(fetch.mock.calls[1][1].body).toEqual({
-      tag_name: '1.0.0',
-      name: '1.0.0',
-      body: 'test',
-      draft: false,
-      prerelease: false,
-    });
-    expect(log).toHaveBeenCalledWith({ tag_name: '0.1.0' });
+    expect(fetch.mock.calls[1][1].body).toEqual(
+      JSON.stringify({
+        tag_name: '1.0.0',
+        name: '1.0.0',
+        body: 'test',
+        draft: false,
+        prerelease: false,
+      })
+    );
+    expect(log).toHaveBeenCalledWith(JSON.stringify({ tag_name: '0.1.0' }));
     assertExitOk();
   });
 
@@ -95,14 +97,16 @@ describe('Release creation', () => {
 
     minimist.mockImplementation(jest.fn(() => ({ body: 'test', prerelease: 'true', draft: 'true' })));
     await createRelease();
-    expect(fetch.mock.calls[1][1].body).toEqual({
-      tag_name: '1.0.0',
-      name: '1.0.0',
-      body: 'test',
-      draft: true,
-      prerelease: true,
-    });
-    expect(log).toHaveBeenCalledWith({ tag_name: '0.1.0' });
+    expect(fetch.mock.calls[1][1].body).toEqual(
+      JSON.stringify({
+        tag_name: '1.0.0',
+        name: '1.0.0',
+        body: 'test',
+        draft: true,
+        prerelease: true,
+      })
+    );
+    expect(log).toHaveBeenCalledWith(JSON.stringify({ tag_name: '0.1.0' }));
     assertExitOk();
   });
 });
