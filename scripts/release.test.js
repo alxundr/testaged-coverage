@@ -58,7 +58,7 @@ describe('Release creation', () => {
     minimist.mockReturnValue(() => ({ body: undefined }));
 
     await createRelease();
-    expect(log).toHaveBeenCalledWith('arg body not specified');
+    expect(log).toHaveBeenCalledWith('argv body not specified');
     assertExitError();
   });
 
@@ -73,6 +73,35 @@ describe('Release creation', () => {
 
     minimist.mockImplementation(jest.fn(() => ({ body: 'test' })));
     await createRelease();
+    expect(fetch.mock.calls[1][1].body).toEqual({
+      tag_name: '1.0.0',
+      name: '1.0.0',
+      body: 'test',
+      draft: false,
+      prerelease: false,
+    });
+    expect(log).toHaveBeenCalledWith({ tag_name: '0.1.0' });
+    assertExitOk();
+  });
+
+  test('includes prerelase and draft from specified in argv', async () => {
+    fetch.mockImplementation(() =>
+      Promise.resolve({
+        json() {
+          return Promise.resolve({ tag_name: '0.1.0' });
+        },
+      })
+    );
+
+    minimist.mockImplementation(jest.fn(() => ({ body: 'test', prerelease: 'true', draft: 'true' })));
+    await createRelease();
+    expect(fetch.mock.calls[1][1].body).toEqual({
+      tag_name: '1.0.0',
+      name: '1.0.0',
+      body: 'test',
+      draft: true,
+      prerelease: true,
+    });
     expect(log).toHaveBeenCalledWith({ tag_name: '0.1.0' });
     assertExitOk();
   });

@@ -18,7 +18,7 @@ const createRelease = async () => {
     }
 
     if (!argv.body) {
-      throw new Error('arg body not specified');
+      throw new Error('argv body not specified');
     }
 
     const response = await fetch(`https://api.github.com/repos/alxundr/${pkg.name}/releases`, {
@@ -27,8 +27,8 @@ const createRelease = async () => {
         tag_name: pkg.version,
         name: pkg.version,
         body: argv.body,
-        draft: argv.draft || false,
-        prelease: argv.prelease || false,
+        draft: argv.draft === 'true',
+        prerelease: argv.prerelease === 'true',
       },
     });
 
