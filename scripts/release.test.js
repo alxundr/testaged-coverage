@@ -8,6 +8,7 @@ jest.mock('chalk', () => {
   return {
     green: text => text,
     red: text => text,
+    yellow: text => text,
   };
 });
 
@@ -65,6 +66,7 @@ describe('Release creation', () => {
   test('shows success message after release is created', async () => {
     fetch.mockImplementation(() =>
       Promise.resolve({
+        status: 201,
         json() {
           return Promise.resolve({ tag_name: '0.1.0' });
         },
@@ -78,6 +80,7 @@ describe('Release creation', () => {
         tag_name: '1.0.0',
         name: '1.0.0',
         body: 'test',
+        target_commitish: 'master',
         draft: false,
         prerelease: false,
       })
@@ -89,6 +92,7 @@ describe('Release creation', () => {
   test('includes prerelase and draft from specified in argv', async () => {
     fetch.mockImplementation(() =>
       Promise.resolve({
+        status: 201,
         json() {
           return Promise.resolve({ tag_name: '0.1.0' });
         },
@@ -102,6 +106,7 @@ describe('Release creation', () => {
         tag_name: '1.0.0',
         name: '1.0.0',
         body: 'test',
+        target_commitish: 'master',
         draft: true,
         prerelease: true,
       })
