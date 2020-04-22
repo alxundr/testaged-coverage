@@ -114,4 +114,30 @@ describe('Release creation', () => {
     expect(log).toHaveBeenCalledWith(JSON.stringify({ tag_name: '0.1.0' }));
     assertExitOk();
   });
+
+  test('throw error when create request status is not 201', async () => {
+    fetch.mockImplementation(() =>
+      Promise.resolve({
+        status: 400,
+        json() {
+          return Promise.resolve({ tag_name: '0.1.0', message: 'some message' });
+        },
+      })
+    );
+
+    minimist.mockImplementation(jest.fn(() => ({ body: 'test', prerelease: 'true', draft: 'true' })));
+    await createRelease();
+    expect(fetch.mock.calls[1][1].body).toEqual(
+      JSON.stringify({
+        tag_name: '1.0.0',
+        name: '1.0.0',
+        body: 'test',
+        target_commitish: 'master',
+        draft: true,
+        prerelease: true,
+      })
+    );
+    expect(log).toHaveBeenCalledWith('some message');
+    assertExitError();
+  });
 });
