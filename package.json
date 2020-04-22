@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "test:file": "jest --watch --findRelatedTests",
-    "test:coverage": "jest --runInBand --coverage"
+    "test:coverage": "jest --runInBand --coverage",
+    "release": "node scripts/release.bin.js"
   },
   "files": [
     "src"
@@ -36,6 +37,7 @@
   "devDependencies": {
     "husky": "^4.2.5",
     "jest": "^25.4.0",
+    "node-fetch": "^2.6.0",
     "prettier": "2.0.2"
   }
 }
