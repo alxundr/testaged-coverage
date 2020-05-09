@@ -2,7 +2,9 @@ const fetch = require('node-fetch');
 const chalk = require('chalk');
 const minimist = require('minimist');
 const pkg = require('../package.json');
-require('dotenv').config();
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const fetchLatestRelease = async () => {
   const response = await fetch(`https://api.github.com/repos/alxundr/${pkg.name}/releases/latest`);

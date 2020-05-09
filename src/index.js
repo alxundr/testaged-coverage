@@ -37,17 +37,18 @@ async function executeTests() {
     console.log(chalk.yellow('\nNo tests matched!\n'));
     process.exit(0);
   }
-  try {
-    const { stdout } = await exec(
-      `npm run test -- --findRelatedTests ${files.join(' ')} --coverage --collectCoverageOnlyFrom ${files.join(' ')}`
-    );
-    console.log(chalk.green(stdout));
-    process.exit(0);
-  } catch (e) {
-    console.error(chalk.red('\nThere is an error\n'));
-    console.error(chalk.red(e.message));
-    process.exit(1);
-  }
+
+  const test = require('child_process').spawn(
+    'npm',
+    ['run', 'test', '--', '--findRelatedTests', ...files, '--coverage', '--collectCoverageOnlyFrom', ...files],
+    {
+      stdio: 'inherit',
+    }
+  );
+
+  test.on('close', code => {
+    process.exit(code);
+  });
 }
 
 module.exports = {
