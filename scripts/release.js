@@ -6,15 +6,53 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const fetchLatestRelease = async () => {
-  const response = await fetch(`https://api.github.com/repos/alxundr/${pkg.name}/releases/latest`);
-  return response.json();
+const githubClient = () => {
+  const releasesApiUrl = `https://api.github.com/repos/alxundr/${pkg.name}/releases`;
+
+  const fetchLatestRelease = async () => {
+    const response = await fetch(`${releasesApiUrl}/latest`);
+    return response.json();
+  };
+
+  const postRelease = async ({ message, draft = false, prerelease = false }) => {
+    const body = JSON.stringify({
+      tag_name: pkg.version,
+      name: pkg.version,
+      body: message,
+      target_commitish: 'master',
+      draft: draft,
+      prerelease: prerelease,
+    });
+
+    console.log(chalk.yellow(releasesApiUrl));
+    console.log(chalk.yellow('requesting with body', body));
+
+    const response = await fetch(releasesApiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `token ${process.env.GITHUB_TOKEN}` },
+      body,
+    });
+
+    const json = await response.json();
+
+    if (response.status !== 201) {
+      throw new Error(json.message);
+    }
+
+    return json;
+  };
+
+  return {
+    fetchLatestRelease,
+    postRelease,
+  };
 };
 
 const createRelease = async () => {
   try {
     const argv = minimist(process.argv.slice(2));
-    const { html_url, tag_name } = await fetchLatestRelease();
+
+    const { html_url, tag_name } = await githubClient().fetchLatestRelease();
 
     console.log(chalk.yellow('found latest release:', html_url));
 
@@ -26,31 +64,9 @@ const createRelease = async () => {
       throw new Error('argv body not specified');
     }
 
-    const body = JSON.stringify({
-      tag_name: pkg.version,
-      name: pkg.version,
-      body: argv.body,
-      target_commitish: 'master',
-      draft: argv.draft === 'true',
-      prerelease: argv.prerelease === 'true',
-    });
+    const json = await githubClient().postRelease({ message: argv.body, draft: argv.draft, prerelease: argv.prerelease });
 
-    console.log(chalk.yellow(`https://api.github.com/repos/alxundr/${pkg.name}/releases`));
-    console.log(chalk.yellow('requesting with body', body));
-
-    const response = await fetch(`https://api.github.com/repos/alxundr/${pkg.name}/releases`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `token ${process.env.GITHUB_TOKEN}` },
-      body,
-    });
-
-    const result = await response.json();
-
-    if (response.status !== 201) {
-      throw new Error(result.message);
-    }
-
-    console.log(chalk.green(JSON.stringify(result)));
+    console.log(chalk.green(JSON.stringify(json)));
     process.exit(0);
   } catch (e) {
     console.log(chalk.red(e.message));

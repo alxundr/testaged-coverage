@@ -17,6 +17,7 @@ jest.mock('minimist');
 jest.mock('../package.json', () => {
   return {
     version: '1.0.0',
+    name: 'testaged-coverage',
   };
 });
 
@@ -31,7 +32,6 @@ describe('Release creation', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    jest.resetAllMocks();
   });
 
   test('throws error when latest release tag_name equals pkg.version', async () => {
@@ -43,6 +43,7 @@ describe('Release creation', () => {
       })
     );
     await createRelease();
+    expect(fetch.mock.calls[0][0]).toEqual(`https://api.github.com/repos/alxundr/testaged-coverage/releases/latest`);
     expect(log).toHaveBeenCalledWith('version in package.json has not been updated');
     assertExitError();
   });
@@ -59,6 +60,7 @@ describe('Release creation', () => {
     minimist.mockReturnValue(() => ({ body: undefined }));
 
     await createRelease();
+    expect(fetch.mock.calls[0][0]).toEqual(`https://api.github.com/repos/alxundr/testaged-coverage/releases/latest`);
     expect(log).toHaveBeenCalledWith('argv body not specified');
     assertExitError();
   });
@@ -75,6 +77,8 @@ describe('Release creation', () => {
 
     minimist.mockImplementation(jest.fn(() => ({ body: 'test' })));
     await createRelease();
+    expect(fetch.mock.calls[0][0]).toEqual(`https://api.github.com/repos/alxundr/testaged-coverage/releases/latest`);
+    expect(fetch.mock.calls.length).toEqual(2);
     expect(fetch.mock.calls[1][1].body).toEqual(
       JSON.stringify({
         tag_name: '1.0.0',
@@ -99,8 +103,9 @@ describe('Release creation', () => {
       })
     );
 
-    minimist.mockImplementation(jest.fn(() => ({ body: 'test', prerelease: 'true', draft: 'true' })));
+    minimist.mockImplementation(jest.fn(() => ({ body: 'test', prerelease: true, draft: true })));
     await createRelease();
+    expect(fetch.mock.calls[0][0]).toEqual(`https://api.github.com/repos/alxundr/testaged-coverage/releases/latest`);
     expect(fetch.mock.calls[1][1].body).toEqual(
       JSON.stringify({
         tag_name: '1.0.0',
@@ -125,8 +130,9 @@ describe('Release creation', () => {
       })
     );
 
-    minimist.mockImplementation(jest.fn(() => ({ body: 'test', prerelease: 'true', draft: 'true' })));
+    minimist.mockImplementation(jest.fn(() => ({ body: 'test', prerelease: true, draft: true })));
     await createRelease();
+    expect(fetch.mock.calls[0][0]).toEqual(`https://api.github.com/repos/alxundr/testaged-coverage/releases/latest`);
     expect(fetch.mock.calls[1][1].body).toEqual(
       JSON.stringify({
         tag_name: '1.0.0',
