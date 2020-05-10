@@ -1,5 +1,9 @@
 'use strict';
 
+const minimist = require('minimist');
+
+jest.mock('minimist');
+
 jest.mock('util', () => {
   return {
     promisify: fn => fn,
@@ -28,6 +32,11 @@ describe('Binary execution', () => {
     'src/__tests__/App.test.tsx',
     'src/Hero.test.jsx',
     'other-script.js',
+    'scripts/bin.js',
+    'scripts/bin.test.js',
+    'other-folder/foo.js',
+    'other-folder/__tests__/foo.js',
+    'ignored-folder/ignored.js',
   ];
 
   const execMock = command => {
@@ -63,12 +72,12 @@ describe('Binary execution', () => {
 
   beforeEach(() => {
     require('child_process').exec.mockImplementation(execMock);
+    minimist.mockReturnValue({ basedir: undefined });
     spawnMock();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
-    jest.resetAllMocks();
   });
 
   test('logs error when coverageThreshold is not found', async () => {
@@ -88,7 +97,6 @@ describe('Binary execution', () => {
   });
 
   test('filters spec and test files from staged tests', async () => {
-    spawnMock();
     await executeTests();
     expect(spawn).toHaveBeenCalledWith(
       'npm',
@@ -105,6 +113,36 @@ describe('Binary execution', () => {
         'src/components/Layout.js',
         'src/App.tsx',
         'src/Hero.jsx',
+      ],
+      {
+        stdio: 'inherit',
+      }
+    );
+    assertExitOk();
+  });
+
+  test('includes files from basedir from args', async () => {
+    minimist.mockReturnValue({ basedir: 'src scripts other-folder' });
+    await executeTests();
+    expect(spawn).toHaveBeenCalledWith(
+      'npm',
+      [
+        'run',
+        'test',
+        '--',
+        '--findRelatedTests',
+        'src/components/Layout.js',
+        'src/App.tsx',
+        'src/Hero.jsx',
+        'scripts/bin.js',
+        'other-folder/foo.js',
+        '--coverage',
+        '--collectCoverageOnlyFrom',
+        'src/components/Layout.js',
+        'src/App.tsx',
+        'src/Hero.jsx',
+        'scripts/bin.js',
+        'other-folder/foo.js',
       ],
       {
         stdio: 'inherit',

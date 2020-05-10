@@ -51,7 +51,6 @@ const githubClient = () => {
 const createRelease = async () => {
   try {
     const argv = minimist(process.argv.slice(2));
-
     const { html_url, tag_name } = await githubClient().fetchLatestRelease();
 
     console.log(chalk.yellow('found latest release:', html_url));

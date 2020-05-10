@@ -3,6 +3,7 @@
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const chalk = require('chalk');
+const minimist = require('minimist');
 
 async function findTests() {
   const fileRegex = /src\/[a-zA-Z](.+)(jsx|js|tsx|ts)/;
@@ -10,8 +11,16 @@ async function findTests() {
   const { stdout } = await exec('git diff --name-only --cached');
   const endsWith = file => file.endsWith('.js') || file.endsWith('.jsx') || file.endsWith('.ts') || file.endsWith('.tsx');
   const stagedFiles = [];
+
+  const isFileInBasedir = _file => {
+    const argv = minimist(process.argv.slice(2));
+    const basedir = argv.basedir !== undefined ? argv.basedir.split(' ') : ['src'];
+    debugger;
+    return basedir.some(dir => _file.startsWith(dir));
+  };
+
   for (const file of stdout.split('\n')) {
-    if (!testRegex.test(file) && file.startsWith('src') && endsWith(file) && stagedFiles.indexOf(file) === -1) {
+    if (!testRegex.test(file) && isFileInBasedir(file) && endsWith(file) && stagedFiles.indexOf(file) === -1) {
       stagedFiles.push(file);
     } else if (testRegex.test(file) && file.startsWith('src') && endsWith(file)) {
       const newFile = file.replace('/__tests__', '').replace('.test', '').replace('.spec', '');

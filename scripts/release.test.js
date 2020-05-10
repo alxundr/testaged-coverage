@@ -57,7 +57,7 @@ describe('Release creation', () => {
       })
     );
 
-    minimist.mockReturnValue(() => ({ body: undefined }));
+    minimist.mockReturnValue({ body: undefined });
 
     await createRelease();
     expect(fetch.mock.calls[0][0]).toEqual(`https://api.github.com/repos/alxundr/testaged-coverage/releases/latest`);

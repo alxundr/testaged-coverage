@@ -5,6 +5,7 @@ Use this library to execute tests on your git staged files and verify they compl
 Before the tests are run, make sure you have set a **Jest** "coverageThreshold". You can learn how to configure it [here](https://jestjs.io/docs/en/configuration#coveragethreshold-object).
 
 ```js
+// package.json
 {
   ...
   "jest": {
@@ -43,6 +44,14 @@ In your `package.json`, add the script to run as a pre-commit hook.
 ### Directly in command line
 
 Just execute `node ./node_modules/testaged-coverage`
+
+Starting **1.3.0** you can add a **--basedir** array of folders where to look for tests
+
+```js
+node ./node_modules/testaged-coverage --basedir="src scripts folder1 folder2"
+```
+
+By default --basedir is folder `src`
 
 ## Troubleshooting
 
