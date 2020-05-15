@@ -158,4 +158,39 @@ describe('Binary execution', () => {
     await executeTests();
     assertExitError();
   });
+
+  test('executes npm.cmd for win platform', async () => {
+    minimist.mockReturnValue({ basedir: 'src scripts other-folder' });
+    Object.defineProperty(process, 'platform', {
+      value: 'win32',
+      writeable: false,
+    });
+    await executeTests();
+    expect(spawn).toHaveBeenCalledWith(
+      'npm.cmd',
+      [
+        'run',
+        'test',
+        '--',
+        '--findRelatedTests',
+        'src/components/Layout.js',
+        'src/App.tsx',
+        'src/Hero.jsx',
+        'scripts/bin.js',
+        'other-folder/foo.js',
+        '--coverage',
+        '--collectCoverageOnlyFrom',
+        'src/components/Layout.js',
+        'src/App.tsx',
+        'src/Hero.jsx',
+        'scripts/bin.js',
+        'other-folder/foo.js',
+        '--passWithNoTests',
+      ],
+      {
+        stdio: 'inherit',
+      }
+    );
+    assertExitOk();
+  });
 });

@@ -47,8 +47,10 @@ async function executeTests() {
     process.exit(0);
   }
 
+  const npmCommand = /^win/.test(process.platform) ? 'npm.cmd' : 'npm';
+
   const test = require('child_process').spawn(
-    'npm',
+    npmCommand,
     ['run', 'test', '--', '--findRelatedTests', ...files, '--coverage', '--collectCoverageOnlyFrom', ...files, '--passWithNoTests'],
     {
       stdio: 'inherit',
