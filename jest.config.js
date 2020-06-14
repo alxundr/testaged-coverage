@@ -8,5 +8,5 @@ module.exports = {
       statements: 100,
     },
   },
-  collectCoverageFrom: ['src/**/*.js', '!src/bin.js'],
+  collectCoverageFrom: ['src/**/*.js', '!src/testaged-coverage.js'],
 };
