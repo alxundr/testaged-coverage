@@ -2,6 +2,8 @@
 
 Use this library to execute tests on your git staged files and verify they comply with the test coverage threshold.
 
+## You can install this dependency globally now (starting 1.3.3) with `yarn add global testaged-coverage` or `npm i testaged-coverage -g`.
+
 Before the tests are run, make sure you have set a **Jest** "coverageThreshold". You can learn how to configure it [here](https://jestjs.io/docs/en/configuration#coveragethreshold-object).
 
 ```js
@@ -14,7 +16,7 @@ Before the tests are run, make sure you have set a **Jest** "coverageThreshold".
         "branches": 80,
         "functions": 80,
         "lines": 80,
-        "statements": -10
+        "statements": 80
       }
     }
   }
@@ -35,7 +37,7 @@ In your `package.json`, add the script to run as a pre-commit hook.
 {
   "husky": {
     "hooks": {
-      "pre-commit": "node ./node_modules/testaged-coverage && <you can include other scripts here (e.g. lint-staged)>"
+      "pre-commit": "testaged-coverage && <you can include other scripts here (e.g. lint-staged)>"
     }
   },
 }
@@ -43,12 +45,12 @@ In your `package.json`, add the script to run as a pre-commit hook.
 
 ### Directly in command line
 
-Just execute `node ./node_modules/testaged-coverage`
+Just execute `testaged-coverage`
 
 Starting **1.3.0** you can add a **--basedir** array of folders where to look for tests
 
 ```js
-node ./node_modules/testaged-coverage --basedir="src scripts folder1 folder2"
+testaged-coverage --basedir="src scripts folder1 folder2"
 ```
 
 By default --basedir is folder `src`
