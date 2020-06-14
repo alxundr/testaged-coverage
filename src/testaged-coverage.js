@@ -1,3 +1,4 @@
-const { executeTests } = require('./index');
+#!/usr/bin/env node
+var testaged = require('./index');
 
-executeTests();
+testaged.executeTests();
