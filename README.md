@@ -2,7 +2,10 @@
 
 Use this library to execute tests on your git staged files and verify they comply with the test coverage threshold.
 
-## You can install this dependency globally now (starting 1.3.3) with `yarn add global testaged-coverage` or `npm i testaged-coverage -g`.
+### You can install this dependency globally now (starting 1.3.3)
+`yarn add global testaged-coverage` or
+
+`npm install testaged-coverage -g`.
 
 Before the tests are run, make sure you have set a **Jest** "coverageThreshold". You can learn how to configure it [here](https://jestjs.io/docs/en/configuration#coveragethreshold-object).
 
