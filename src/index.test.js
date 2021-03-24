@@ -114,6 +114,7 @@ describe('Binary execution', () => {
         'src/App.tsx',
         'src/Hero.jsx',
         '--passWithNoTests',
+        '--watchAll=false',
       ],
       {
         stdio: 'inherit',
@@ -145,6 +146,7 @@ describe('Binary execution', () => {
         'scripts/bin.js',
         'other-folder/foo.js',
         '--passWithNoTests',
+        '--watchAll=false',
       ],
       {
         stdio: 'inherit',
@@ -186,6 +188,7 @@ describe('Binary execution', () => {
         'scripts/bin.js',
         'other-folder/foo.js',
         '--passWithNoTests',
+        '--watchAll=false',
       ],
       {
         stdio: 'inherit',

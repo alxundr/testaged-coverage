@@ -71,4 +71,4 @@ This library assumes you have a script setup for tests in your `package.json`.
 }
 ```
 
-If you are using `react-scripts test`, you need to add the environment variable `CI=true` to prevent the script from running in watch mode.
+If you are using versions 1.3.3 or lower, when running `testaged-coverage`, you will need to add the environment variable `CI=true` to your `test` script in your `package.json` in order to prevent the script from running in watch mode. This will no longer be necessary from versions 1.3.4 and on.

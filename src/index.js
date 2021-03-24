@@ -51,7 +51,7 @@ async function executeTests() {
 
   const test = require('child_process').spawn(
     npmCommand,
-    ['run', 'test', '--', '--findRelatedTests', ...files, '--coverage', '--collectCoverageOnlyFrom', ...files, '--passWithNoTests'],
+    ['run', 'test', '--', '--findRelatedTests', ...files, '--coverage', '--collectCoverageOnlyFrom', ...files, '--passWithNoTests', '--watchAll=false'],
     {
       stdio: 'inherit',
     }
